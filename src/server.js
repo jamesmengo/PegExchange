@@ -1,4 +1,5 @@
 const express = require("express")
+const userRouter = require("./routers/user")
 
 const server = express();
 
@@ -6,8 +7,6 @@ const server = express();
 server.use(express.json());
 
 // Routers
-server.get("/", (req, res) => {
-  res.send("hello")
-})
+server.use(userRouter)
 
 module.exports = server;
