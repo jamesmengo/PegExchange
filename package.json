@@ -1,0 +1,27 @@
+{
+  "name": "pegexchange",
+  "version": "1.0.0",
+  "description": "Shopify Backend Challenge",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon src/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jmengo/PegExchange.git"
+  },
+  "author": "James Meng",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jmengo/PegExchange/issues"
+  },
+  "homepage": "https://github.com/jmengo/PegExchange#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "mongoose": "^5.10.9"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.5"
+  }
+}
