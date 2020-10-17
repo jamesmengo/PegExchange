@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const User = require("../models/user")
 const imageSchema = new mongoose.Schema({
   image: {
     type: Buffer,
@@ -10,7 +11,8 @@ const imageSchema = new mongoose.Schema({
   },
   upvotes: {
     type: Number,
-    default: 0
+    default: 0,
+    min: 0
   },
   uploader: {
     type: mongoose.Schema.Types.ObjectId,
@@ -19,6 +21,16 @@ const imageSchema = new mongoose.Schema({
   },
 }, {
   timestamps: true
+})
+
+imageSchema.pre('save', async function (next) {
+  if (this.isNew) {
+    const image = this;
+    const user = await User.findById(image.uploader)
+    user.credits++
+    await user.save()
+    next()
+  }
 })
 
 const Image = mongoose.model("Image", imageSchema);

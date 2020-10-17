@@ -1,6 +1,7 @@
 const express = require("express")
 const userRouter = require("./routers/user")
 const imageRouter = require("./routers/image")
+const upvoteRouter = require("./routers/upvote")
 
 const server = express();
 
@@ -10,5 +11,6 @@ server.use(express.json());
 // Routers
 server.use(userRouter)
 server.use(imageRouter)
+server.use(upvoteRouter)
 
 module.exports = server;

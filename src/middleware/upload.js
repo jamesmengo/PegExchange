@@ -5,11 +5,11 @@ const upload = multer({
   limits: {
     fileSize: 16000000,
   },
-  fileFilter(req, file, cb) {
+  fileFilter(req, file, callback) {
     if (!file.originalname.match(/\.(jpg|jpeg|png|JPG|JPEG|PNG)$/)) {
       return cb(new Error("Please upload an image with extension .jpg, .jpeg, or .png"));
     }
-    cb(undefined, true);
+    callback(undefined, true);
   }
 });
 
