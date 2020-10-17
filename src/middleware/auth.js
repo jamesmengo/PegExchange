@@ -5,7 +5,6 @@ const auth = async (req, res, next) => {
   try {
     const token = req.header("Authorization").replace("Bearer ", "");
     const decodedToken = jsonwebtoken.verify(token, "tempSecret")
-    console.log(decodedToken)
     const user = await User.findOne({
       _id: decodedToken._id,
       "tokens.token": token
@@ -17,7 +16,6 @@ const auth = async (req, res, next) => {
     req.token = token;
     next();
   } catch (err) {
-    console.log(err)
     res.status(401).send({
       error: "Please Authenticate"
     });
