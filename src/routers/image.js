@@ -8,6 +8,7 @@ const {
 const auth = require("../middleware/auth")
 const Image = require("../models/image")
 
+// uploadImage
 router.post("/image", auth, upload.array("images"), async (req, res) => {
   try {
     const imageBufferArray = await createBufferArray(req.files);
@@ -26,7 +27,7 @@ router.post("/image", auth, upload.array("images"), async (req, res) => {
   }
 })
 
-// Get my uploads
+// getUploads
 // GET uploads/me?private={bool}
 router.get("/image/me", auth, async (req, res) => {
   const match = {}
@@ -43,6 +44,7 @@ router.get("/image/me", auth, async (req, res) => {
   }
 })
 
+// deleteAllUploads
 // Async delete sends 202 and processes deletions in the background
 router.delete("/image/all", auth, async (req, res) => {
   try {

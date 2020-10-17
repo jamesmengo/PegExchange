@@ -80,6 +80,15 @@ userSchema.pre('save', async function (next) {
   next()
 })
 
+// Cascade delete user uploads when user is removed
+userSchema.pre('remove', async function (next) {
+  const user = this
+  await Image.deleteMany({
+    creator: user._id
+  })
+  next()
+})
+
 const User = mongoose.model("User", userSchema)
 
 module.exports = User;
