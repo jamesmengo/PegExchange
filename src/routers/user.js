@@ -17,12 +17,16 @@ router.post("/users", async (req, res) => {
 router.get("/users/:username", async (req, res) => {
   try {
     const username = req.params.username;
+    const password = req.body.password;
+    if (!password) {
+      throw new Error("Please input a password")
+    }
     const user = await User.findOne({
       username
     })
     res.send(user)
   } catch (err) {
-    res.status(400).send(err)
+    res.status(401).send(err)
   }
 })
 

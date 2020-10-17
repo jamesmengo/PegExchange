@@ -19,7 +19,9 @@
   "homepage": "https://github.com/jmengo/PegExchange#readme",
   "dependencies": {
     "express": "^4.17.1",
-    "mongoose": "^5.10.9"
+    "mongoose": "^5.10.9",
+    "multer": "^1.4.2",
+    "sharp": "^0.26.2"
   },
   "devDependencies": {
     "nodemon": "^2.0.5"
