@@ -3,26 +3,12 @@ const router = new express.Router()
 const mongoose = require("mongoose")
 const Image = require("../models/image")
 const User = require("../models/user")
-const sharp = require("sharp")
-const multer = require("multer")
+const {
+  upload,
+  createBufferArray
+} = require("../middleware/upload")
 
-const upload = multer({
-  limits: {
-    fileSize: 16000000
-  }
-})
-
-const createBufferArray = async (files) => {
-  try {
-    const imageBuffers = await Promise.all(files.map((file) => sharp(file.buffer).resize({
-      height: 1080,
-      width: 1920
-    }).png().toBuffer()))
-    return imageBuffers
-  } catch (err) {
-    return []
-  }
-}
+// TODO: Use AUTH for this 
 
 // Get all images of the user
 router.get("/image/me", async (req, res) => {
@@ -30,7 +16,6 @@ router.get("/image/me", async (req, res) => {
     const images = await Image.find({
       uploader: mongoose.Types.ObjectId(req.body.uploader)
     })
-    console.log("images:", images)
     if (!images) {
       images = []
     }
