@@ -5,6 +5,7 @@ const Image = require("../../src/models/image")
 
 const userOneId = new mongoose.Types.ObjectId()
 const userTwoId = new mongoose.Types.ObjectId()
+const userThreeId = new mongoose.Types.ObjectId()
 
 const userOneImageOneId = new mongoose.Types.ObjectId()
 const userOneImageTwoId = new mongoose.Types.ObjectId()
@@ -14,7 +15,7 @@ const userTwoImageTwoId = new mongoose.Types.ObjectId()
 
 const userOne = {
   _id: userOneId,
-  credits: 1,
+  credits: 0,
   username: "user1",
   password: 'test123',
   tokens: [{
@@ -26,12 +27,24 @@ const userOne = {
 
 const userTwo = {
   _id: userTwoId,
-  credits: 1,
+  credits: 0,
   username: "user2",
   password: 'test123',
   tokens: [{
     token: jwt.sign({
       _id: userTwoId
+    }, process.env.JWT_SECRET)
+  }]
+}
+
+const userThree = {
+  _id: userThreeId,
+  credits: 0,
+  username: "user3",
+  password: 'test123',
+  tokens: [{
+    token: jwt.sign({
+      _id: userThreeId
     }, process.env.JWT_SECRET)
   }]
 }
@@ -82,6 +95,7 @@ const setUpDatabase = async () => {
   await Image.deleteMany({})
   await new User(userOne).save()
   await new User(userTwo).save()
+  await new User(userThree).save()
   await new Image(userOneImageOne).save()
   await new Image(userOneImageTwo).save()
   await new Image(userTwoImageOne).save()
@@ -99,5 +113,6 @@ module.exports = {
   userOneId,
   userTwoId,
   userTwoImageOneId,
-  userTwoImageTwoId
+  userTwoImageTwoId,
+  userThree
 }

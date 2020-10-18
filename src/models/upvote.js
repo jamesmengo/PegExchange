@@ -34,7 +34,7 @@ upvoteSchema.post("save", async function (next) {
     uploader: upvote.uploaderId
   })
   uploader.credits++
-  upvoter.credits = max(upvoter.credits - 1, 0)
+  upvoter.credits = Math.max(upvoter.credits - 1, 0)
   image.upvotes++
   await uploader.save()
   await upvoter.save()
@@ -52,9 +52,9 @@ upvoteSchema.post("remove", async function (next) {
   const image = await Image.findOne({
     uploader: upvote.uploaderId
   })
-  uploader.credits = max(uploader.credits - 1, 0)
+  uploader.credits = Math.max(uploader.credits - 1, 0)
   upvoter.credits++
-  image.upvotes = max(image.upvotes - 1, 0)
+  image.upvotes = Math.max(image.upvotes - 1, 0)
   await uploader.save()
   await upvoter.save()
   await image.save()

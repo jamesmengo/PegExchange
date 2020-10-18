@@ -12,10 +12,10 @@ router.post("/upvote", auth, async (req, res) => {
   try {
     const image = await Image.findById(req.body.imageId)
     if (req.user._id.toString() == image.uploader.toString()) {
-      throw new Error("Can not upvote your own photos")
+      res.status(400).send("Can not upvote your own photos")
     }
     if (req.user.credits == 0) {
-      throw new Error("Insufficient Credits: Please upload photos to earn credits.")
+      res.status(400).send("Insufficient Credits: Please upload photos to earn credits.")
     }
     const upvote = await new Upvote({
       userId: req.user._id,
