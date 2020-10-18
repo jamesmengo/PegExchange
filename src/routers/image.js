@@ -12,6 +12,9 @@ const Image = require("../models/image")
 // Params: { private: bool, images: Image}
 router.post("/image", auth, upload.array("images"), async (req, res) => {
   try {
+    if (req.files.length == 0) {
+      res.status(400).send("Please include a photo")
+    }
     const imageBufferArray = await createBufferArray(req.files)
     await Promise.all(imageBufferArray.map((buffer) => {
       const image = new Image({
@@ -31,21 +34,19 @@ router.post("/image", auth, upload.array("images"), async (req, res) => {
 // getUploads
 // Params: { ?userId: string, ?private: string(bool),}
 // userId<Optional>: If not the same ID as the requesting user, this will only return public images.
-// private<Optional>: This is only used if the userId provided is the same as the requesting user's Id. Setting this to true will only return private, false will only return public. If not present, both private and public are displayed.
 router.get("/image", auth, async (req, res) => {
   try {
-    const match = {}
-    const isSelfRequest = req.body.userId == req.user._id.toString()
+    const match = {
+      private: false
+    }
     if (req.body.userId) {
       match.uploader = mongoose.Types.ObjectId(req.body.userId)
     }
-    if (!isSelfRequest) {
-      match.private = false
-    } else if (req.query.private) {
-      match.private = req.query.private == "true"
-    }
     const images = await Image.find(match)
-    res.send(images)
+    const filtered = images.filter((image) => {
+      return image.uploader.toString() != req.user._id.toString()
+    })
+    res.send(filtered)
   } catch (err) {
     res.status(400).send()
   }
@@ -64,15 +65,17 @@ router.get("/image/me", auth, async (req, res) => {
     const images = await Image.find(match)
     res.send(images)
   } catch (err) {
-    console.log(err)
     res.status(400).send()
   }
 })
 
-// setImagePrivate
-// Request Params imageIds: [{imageId}]
-router.patch("/image/private", auth, async (req, res) => {
+// toggleImagePrivacy
+// Request Params {imageIds: [{imageId}], private: Bool}
+router.patch("/image", auth, async (req, res) => {
   try {
+    if (req.body.private == undefined) {
+      res.status(400).send("Please set privacy to true or false")
+    }
     const imageIds = req.body.imageIds
     const images = await Image.find({
       uploader: req.user._id
@@ -81,29 +84,7 @@ router.patch("/image/private", auth, async (req, res) => {
       res.status(404).send()
     }
     await Promise.all(images.map((image) => {
-      image.private = true
-      return image.save()
-    })).then(() => {
-      res.status(200).send(images)
-    })
-  } catch (err) {
-    res.status(400).send()
-  }
-})
-
-// setImagePublic
-// Request Params imageIds: [{imageId}]
-router.patch("/image/public", auth, async (req, res) => {
-  try {
-    const imageIds = req.body.imageIds
-    const images = await Image.find({
-      uploader: req.user._id
-    }).where("_id").in(imageIds).exec()
-    if (images.length == 0) {
-      res.status(404).send()
-    }
-    await Promise.all(images.map((image) => {
-      image.private = false
+      image.private = req.body.private
       return image.save()
     })).then(() => {
       res.status(200).send(images)
@@ -123,12 +104,15 @@ router.delete("/image", auth, async (req, res) => {
       uploader: req.user._id
     }).where("_id").in(imageIds).exec()
     if (images.length == 0) {
-      res.status(404).send()
+      res.status(400).send()
     }
-    images.map((image) => {
-      image.delete()
+    Promise.all(images.map((image) => {
+      Image.deleteOne({
+        _id: image._id
+      })
+    })).then(() => {
+      res.status(202).send()
     })
-    res.status(202).send()
   } catch (err) {
     res.status(400).send()
   }
@@ -136,14 +120,12 @@ router.delete("/image", auth, async (req, res) => {
 
 // deleteAllUploads
 // Async delete sends 202 and processes deletions in the background
+// This id is tied to the user's token
 // Params: N/A
 router.delete("/image/all", auth, async (req, res) => {
   try {
-    const images = await Image.find({
+    Image.deleteMany({
       uploader: req.user._id
-    })
-    images.map((image) => {
-      image.delete()
     })
     res.status(202).send()
   } catch (err) {

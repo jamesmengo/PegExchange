@@ -4,7 +4,7 @@
   "description": "Shopify Backend Challenge",
   "main": "src/index.js",
   "scripts": {
-    "develop": "./node_modules/.bin/env-cmd -f ./config/dev.env nodemon src/index.js",
+    "start": "./node_modules/.bin/env-cmd -f ./config/dev.env nodemon src/index.js",
     "test": "./node_modules/.bin/env-cmd -f ./config/test.env jest --watch --runInBand"
   },
   "repository": {

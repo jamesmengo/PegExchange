@@ -1,7 +1,6 @@
 const mongoose = require("mongoose")
 const jsonwebtoken = require("jsonwebtoken")
 const bcrypt = require("bcrypt")
-const Image = require("./image")
 
 const userSchema = new mongoose.Schema({
   username: {
@@ -83,6 +82,7 @@ userSchema.pre("save", async function (next) {
 
 // Cascade delete user uploads when user is removed
 userSchema.pre("remove", async function (next) {
+  const Image = require("./image")
   const user = this
   await Image.deleteMany({
     creator: user._id
