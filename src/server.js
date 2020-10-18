@@ -3,14 +3,14 @@ const userRouter = require("./routers/user")
 const imageRouter = require("./routers/image")
 const upvoteRouter = require("./routers/upvote")
 
-const server = express();
+const server = express()
 
 // JSON HTTP Request Middleware
-server.use(express.json());
+server.use(express.json())
 
 // Routers
 server.use(userRouter)
 server.use(imageRouter)
 server.use(upvoteRouter)
 
-module.exports = server;
+module.exports = server

@@ -6,17 +6,17 @@ const upvoteSchema = new mongoose.Schema({
   userId: {
     type: mongoose.Schema.Types.ObjectId,
     required: true,
-    ref: 'User'
+    ref: "User"
   },
   imageId: {
     type: mongoose.Schema.Types.ObjectId,
     required: true,
-    ref: 'Image'
+    ref: "Image"
   },
   uploaderId: {
     type: mongoose.Schema.Types.ObjectId,
     required: true,
-    ref: 'User'
+    ref: "User"
   }
 }, {
   timestamps: true
@@ -33,9 +33,9 @@ upvoteSchema.post("save", async function (next) {
   const image = await Image.findOne({
     uploader: upvote.uploaderId
   })
-  uploader.credits++;
-  upvoter.credits = max(upvoter.credits - 1, 0);
-  image.upvotes++;
+  uploader.credits++
+  upvoter.credits = max(upvoter.credits - 1, 0)
+  image.upvotes++
   await uploader.save()
   await upvoter.save()
   await image.save()
@@ -53,7 +53,7 @@ upvoteSchema.post("remove", async function (next) {
     uploader: upvote.uploaderId
   })
   uploader.credits = max(uploader.credits - 1, 0)
-  upvoter.credits++;
+  upvoter.credits++
   image.upvotes = max(image.upvotes - 1, 0)
   await uploader.save()
   await upvoter.save()

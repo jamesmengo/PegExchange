@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+const mongoose = require("mongoose")
 
 mongoose.connect("mongodb+srv://James1:admin@cluster0.lx0jx.gcp.mongodb.net/PegExchange_Dev?retryWrites=true&w=majority", {
   useNewUrlParser: true,

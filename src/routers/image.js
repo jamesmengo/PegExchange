@@ -12,19 +12,19 @@ const Image = require("../models/image")
 // Params: { private: bool, images: Image}
 router.post("/image", auth, upload.array("images"), async (req, res) => {
   try {
-    const imageBufferArray = await createBufferArray(req.files);
+    const imageBufferArray = await createBufferArray(req.files)
     await Promise.all(imageBufferArray.map((buffer) => {
       const image = new Image({
         image: buffer,
         uploader: req.user._id,
         private: req.body.private
       })
-      return image.save();
+      return image.save()
     })).then((buffers) => {
       res.status(201).send(buffers)
     })
   } catch (err) {
-    res.status(400).send();
+    res.status(400).send()
   }
 })
 
@@ -70,7 +70,7 @@ router.get("/image/me", auth, async (req, res) => {
 })
 
 // setImagePrivate
-// Request Params; imageIds: [{imageId}]
+// Request Params imageIds: [{imageId}]
 router.patch("/image/private", auth, async (req, res) => {
   try {
     const imageIds = req.body.imageIds
@@ -92,7 +92,7 @@ router.patch("/image/private", auth, async (req, res) => {
 })
 
 // setImagePublic
-// Request Params; imageIds: [{imageId}]
+// Request Params imageIds: [{imageId}]
 router.patch("/image/public", auth, async (req, res) => {
   try {
     const imageIds = req.body.imageIds
@@ -143,12 +143,12 @@ router.delete("/image/all", auth, async (req, res) => {
       uploader: req.user._id
     })
     images.map((image) => {
-      image.delete();
+      image.delete()
     })
     res.status(202).send()
   } catch (err) {
-    res.status(400).send();
+    res.status(400).send()
   }
 })
 
-module.exports = router;
+module.exports = router

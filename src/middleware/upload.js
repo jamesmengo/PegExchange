@@ -7,11 +7,11 @@ const upload = multer({
   },
   fileFilter(req, file, callback) {
     if (!file.originalname.match(/\.(jpg|jpeg|png|JPG|JPEG|PNG)$/)) {
-      return cb(new Error("Please upload an image with extension .jpg, .jpeg, or .png"));
+      return cb(new Error("Please upload an image with extension .jpg, .jpeg, or .png"))
     }
-    callback(undefined, true);
+    callback(undefined, true)
   }
-});
+})
 
 const createBufferArray = async (files) => {
   try {

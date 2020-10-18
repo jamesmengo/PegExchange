@@ -1,13 +1,13 @@
-const express = require("express");
-const router = new express.Router();
-const User = require("../models/user");
-const auth = require("../middleware/auth");
+const express = require("express")
+const router = new express.Router()
+const User = require("../models/user")
+const auth = require("../middleware/auth")
 
 // createUser
 router.post("/users", async (req, res) => {
-  const user = new User(req.body);
+  const user = new User(req.body)
   try {
-    await user.save();
+    await user.save()
     res.status(201).send({
       user
     })
@@ -23,7 +23,7 @@ router.post("/users/login", async (req, res) => {
       req.body.username,
       req.body.password
     )
-    const token = await user.generateAndSaveAuthToken();
+    const token = await user.generateAndSaveAuthToken()
     res.send({
       user,
       token
@@ -37,14 +37,14 @@ router.post("/users/login", async (req, res) => {
 router.post("/users/logout", auth, async (req, res) => {
   try {
     req.user.tokens = req.user.tokens.filter((token) => {
-      return token.token !== req.token;
-    });
-    await req.user.save();
-    res.send("User logged out");
+      return token.token !== req.token
+    })
+    await req.user.save()
+    res.send("User logged out")
   } catch (err) {
-    res.status(500).send(err);
+    res.status(500).send(err)
   }
-});
+})
 
 // getSelf
 router.get("/users/me", auth, async (req, res) => {
@@ -65,4 +65,4 @@ router.delete("/users/me", auth, async (req, res) => {
   }
 })
 
-module.exports = router;
+module.exports = router

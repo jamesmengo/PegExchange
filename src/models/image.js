@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+const mongoose = require("mongoose")
 const User = require("../models/user")
 const imageSchema = new mongoose.Schema({
   image: {
@@ -23,9 +23,9 @@ const imageSchema = new mongoose.Schema({
   timestamps: true
 })
 
-imageSchema.pre('save', async function (next) {
+imageSchema.pre("save", async function (next) {
   if (this.isNew) {
-    const image = this;
+    const image = this
     const user = await User.findById(image.uploader)
     user.credits++
     await user.save()
@@ -33,6 +33,6 @@ imageSchema.pre('save', async function (next) {
   }
 })
 
-const Image = mongoose.model("Image", imageSchema);
+const Image = mongoose.model("Image", imageSchema)
 
-module.exports = Image;
+module.exports = Image
