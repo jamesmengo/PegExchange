@@ -4,8 +4,8 @@
   "description": "Shopify Backend Challenge",
   "main": "src/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon src/index.js"
+    "develop": "./node_modules/.bin/env-cmd -f ./config/dev.env nodemon src/index.js",
+    "test": "./node_modules/.bin/env-cmd -f ./config/test.env jest --watch --runInBand"
   },
   "repository": {
     "type": "git",
@@ -26,6 +26,9 @@
     "sharp": "^0.26.2"
   },
   "devDependencies": {
-    "nodemon": "^2.0.5"
+    "env-cmd": "^10.1.0",
+    "jest": "^26.5.3",
+    "nodemon": "^2.0.5",
+    "supertest": "^5.0.0"
   }
 }

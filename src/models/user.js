@@ -38,7 +38,7 @@ userSchema.methods.generateAndSaveAuthToken = async function () {
   const user = this
   const token = jsonwebtoken.sign({
     _id: user.id.toString()
-  }, "tempSecret", {
+  }, process.env.JWT_SECRET, {
     expiresIn: "1 day"
   })
   user.tokens = user.tokens.concat({
