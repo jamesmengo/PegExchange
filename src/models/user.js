@@ -1,6 +1,7 @@
 const mongoose = require("mongoose")
 const jsonwebtoken = require("jsonwebtoken")
 const bcrypt = require("bcrypt")
+const Image = require("./image")
 
 const userSchema = new mongoose.Schema({
   username: {

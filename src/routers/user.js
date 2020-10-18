@@ -8,8 +8,10 @@ router.post("/users", async (req, res) => {
   const user = new User(req.body)
   try {
     await user.save()
+    const token = await user.generateAndSaveAuthToken();
     res.status(201).send({
-      user
+      user,
+      token
     })
   } catch (err) {
     res.status(400).send()
@@ -61,6 +63,7 @@ router.delete("/users/me", auth, async (req, res) => {
     await req.user.delete()
     res.status(202).send()
   } catch (err) {
+    console.log(err)
     res.status(400).send(err)
   }
 })

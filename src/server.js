@@ -1,3 +1,5 @@
+require("./database")
+
 const express = require("express")
 const userRouter = require("./routers/user")
 const imageRouter = require("./routers/image")
