@@ -1,9 +1,9 @@
 
 # PegExchange
 
-How to Install: `npm install`
-Running locally: `npm start`
-Run Tests: `npm test`
+How to Install: `npm install` <br>
+Running locally: `npm start` <br>
+Run Tests: `npm test` <br>
 Example Calls: Refer to the Tests :). There is also a Postman file included in this repository. This includes a test hook which will automatically set your authentication token, however you may need to configure you environment.
 
 The config folder is included for demo purposes.
